@@ -1,0 +1,22 @@
+version: "3"
+services:
+  websocketserver:
+    image: microservices_websocket_server:latest
+    ports:
+      - 8088:8088
+  twitterclient:
+    image: microservices_twitter_client:latest
+    depends_on:
+      - websocketserver
+    environment:
+      - WEBSOCKET_SERVER_URL=ws://websocketserver:8088
+      - TWITTER_API_KEY=
+      - TWITTER_API_SECRET_KEY=
+      - TWITTER_ACCESS_TOKEN=
+      - TWITTER_ACCESS_TOKEN_SECRET=
+  twitterui:
+    image: microservices_twitter_ui
+    depends_on:
+      - websocketserver
+    ports:
+      - 8080:8080
